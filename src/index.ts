@@ -1,32 +1,16 @@
+import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import { etag } from 'hono/etag'
-import { logger } from 'hono/logger'
-import { getPrisma } from './lib/prismaFunctin.js'
-const app = new Hono<{
-  Bindings: {
-    DATABASE_URL: string,
-    JWT_SECRET: string
-  }
-  Variables: {
-    userId: string
-  }
-}>()
 
-app.use(etag(), logger())
+const app = new Hono()
 
-app.get('/', (c) => c.json({
-  "text": "Hello World"
-}))
-
-app.get('/posts/:id', (c) => {
-  const page = c.req.query('page')
-  const id = c.req.param('id')
-  c.header('X-Message', 'Hi!')
-  return c.text(`You want see ${page} of ${id}`)
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
 })
 
-app.post('/', async (c) => {
-  const prisma = getPrisma(c.env.DATABASE_URL)
-})
+const port = 3000
+console.log(`Server is running on http://localhost:${port}`)
 
-export default app
+serve({
+  fetch: app.fetch,
+  port
+})
