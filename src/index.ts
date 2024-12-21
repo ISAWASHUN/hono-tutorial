@@ -1,16 +1,18 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+/**
+ * Welcome to Cloudflare Workers! This is your first worker.
+ *
+ * - Run `npm run dev` in your terminal to start a development server
+ * - Open a browser tab at http://localhost:8787/ to see your worker in action
+ * - Run `npm run deploy` to publish your worker
+ *
+ * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
+ * `Env` object can be regenerated with `npm run cf-typegen`.
+ *
+ * Learn more at https://developers.cloudflare.com/workers/
+ */
 
-const app = new Hono()
-
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
-
-const port = 3000
-console.log(`Server is running on http://localhost:${port}`)
-
-serve({
-  fetch: app.fetch,
-  port
-})
+export default {
+	async fetch(request, env, ctx): Promise<Response> {
+		return new Response('Hello World!');
+	},
+} satisfies ExportedHandler<Env>;
